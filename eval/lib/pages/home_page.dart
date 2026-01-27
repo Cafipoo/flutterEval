@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/category_provider.dart';
+import '../providers/scanned_products_provider.dart';
 import '../pages/super_category_page.dart';
+import '../pages/scanned_products_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -85,8 +87,57 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 8,
                 childAspectRatio: 1.1,
               ),
-              itemCount: provider.superCategories.length,
+              itemCount: provider.superCategories.length + 1, // +1 pour la carte Scanner
               itemBuilder: (context, index) {
+                // Carte Scanner à la fin
+                if (index == provider.superCategories.length) {
+                  return Consumer<ScannedProductsProvider>(
+                    builder: (context, scannedProvider, child) {
+                      return Card(
+                        elevation: 2,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ScannedProductsPage(),
+                              ),
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(8),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                '📷',
+                                style: TextStyle(fontSize: 48),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Scanner',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${scannedProvider.count} produits scannés',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+
                 final superCategory = provider.superCategories[index];
                 return Card(
                   elevation: 2,

@@ -33,7 +33,7 @@ class ScannedProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('📷 Mes produits scannés'),
+        title: const Text('Mes produits scannés'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           Consumer<ScannedProductsProvider>(

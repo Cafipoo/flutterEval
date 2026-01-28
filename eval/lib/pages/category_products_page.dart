@@ -27,7 +27,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
     // Charger les produits au démarrage
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProductProvider>().loadProductsByCategory(
-        widget.categoryName,
+        widget.categoryId,
         refresh: true,
       );
     });
@@ -41,7 +41,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
         _scrollController.position.maxScrollExtent * 0.8) {
       final provider = context.read<ProductProvider>();
       if (!provider.isLoading && provider.hasMore) {
-        provider.loadProductsByCategory(widget.categoryName);
+        provider.loadProductsByCategory(widget.categoryId);
       }
     }
   }
@@ -80,7 +80,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () => provider.loadProductsByCategory(
-                      widget.categoryName,
+                      widget.categoryId,
                       refresh: true,
                     ),
                     child: const Text('Réessayer'),
@@ -98,7 +98,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
 
           return RefreshIndicator(
             onRefresh: () => provider.loadProductsByCategory(
-              widget.categoryName,
+              widget.categoryId,
               refresh: true,
             ),
             child: GridView.builder(

@@ -1,11 +1,13 @@
 class Category {
   final String id;
   final String name;
+  final String icon;
   final int? productsCount;
 
   Category({
     required this.id,
     required this.name,
+    required this.icon,
     this.productsCount,
   });
 
@@ -13,6 +15,7 @@ class Category {
     return Category(
       id: json['id']?.toString() ?? json['tag']?.toString() ?? '',
       name: json['name'] ?? json['value'] ?? json['id'] ?? '',
+      icon: json['icon'] ?? '📦',
       productsCount: json['products'] ?? json['count'],
     );
   }
@@ -21,6 +24,7 @@ class Category {
     return {
       'id': id,
       'name': name,
+      'icon': icon,
       'products': productsCount,
     };
   }

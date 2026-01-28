@@ -144,10 +144,14 @@ class ProductDetailPage extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      _formatNutrientName(entry.key),
-                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    Expanded(
+                                      child: Text(
+                                        _formatNutrientName(entry.key),
+                                        style: const TextStyle(fontWeight: FontWeight.w500),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
+                                    const SizedBox(width: 8),
                                     Text(
                                       '${entry.value} ${_getNutrientUnit(entry.key)}',
                                     ),

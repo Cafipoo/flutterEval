@@ -4,7 +4,7 @@ import 'providers/category_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/search_provider.dart';
 import 'providers/scanned_products_provider.dart';
-import 'pages/home_page.dart';
+import 'pages/main_navigation_page.dart';
 import 'pages/search_page.dart';
 
 void main() {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const HomePage(),
+        home: const MainNavigationPage(),
         routes: {
           '/search': (context) => const SearchPage(),
         },

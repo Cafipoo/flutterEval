@@ -1,24 +1,24 @@
-import 'package:flutter/foundation.dart' hide Category;
-import '../models/super_category.dart';
+import 'package:flutter/foundation.dart';
+import '../models/category.dart' as models;
 import '../services/openfoodfacts_service.dart';
 
 class CategoryProvider with ChangeNotifier {
   final OpenFoodFactsService _service = OpenFoodFactsService();
-  List<SuperCategory> _superCategories = [];
+  List<models.Category> _categories = [];
   bool _isLoading = false;
   String? _error;
 
-  List<SuperCategory> get superCategories => _superCategories;
+  List<models.Category> get categories => _categories;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  Future<void> loadSuperCategories() async {
+  Future<void> loadCategories() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      _superCategories = await _service.getSuperCategories();
+      _categories = await _service.getCategories();
       _isLoading = false;
       notifyListeners();
     } catch (e) {

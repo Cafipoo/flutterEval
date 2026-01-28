@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import '../models/product.dart';
 import '../models/category.dart';
 import '../models/search_response.dart';
-import '../models/super_category.dart';
 
 class OpenFoodFactsService {
   static const String baseUrl = 'https://world.openfoodfacts.org';
@@ -83,12 +82,9 @@ class OpenFoodFactsService {
     try {
       final limitedPageSize = pageSize > maxPageSize ? maxPageSize : pageSize;
 
-      final url = Uri.parse(
-        '$baseUrl/api/v2/search?search_terms=${Uri.encodeComponent(query)}'
-        '&page=$page'
-        '&page_size=$limitedPageSize'
-        '&fields=$_optimizedFields',
-      );
+      final String encodedQuery = Uri.encodeComponent(query);
+
+      final url = Uri.parse('$baseUrl/cgi/search.pl?search_terms=$encodedQuery&search_simple=1&action=process&json=1&page_size=$limitedPageSize&fields=$_optimizedFields');
 
       final response = await http.get(url, headers: _headers);
 
@@ -103,77 +99,19 @@ class OpenFoodFactsService {
     }
   }
 
-  /// Retourne tes 10 catégories spécifiques pour le filtrage
-  List<Category> _getDefaultCategories() {
+  /// Retourne les catégories principales
+  Future<List<Category>> getCategories() async {
     return [
-      Category(id: 'en:fruits', name: 'Fruits'),
-      Category(id: 'en:vegetables', name: 'Légumes'),
-      Category(id: 'en:meats', name: 'Viandes'),
-      Category(id: 'en:dairy', name: 'Laitages'),
-      Category(id: 'en:beverages', name: 'Boissons'),
-      Category(id: 'en:cereals', name: 'Céréales'),
-      Category(id: 'en:snacks', name: 'Snacks'),
-      Category(id: 'en:fish', name: 'Poissons'),
-      Category(id: 'en:sweets', name: 'Sucreries'),
-      Category(id: 'en:others', name: 'Autres'),
+      Category(id: 'en:fruits-based-foods', name: 'Fruits', icon: '🍎'),
+      Category(id: 'en:vegetables-based-foods', name: 'Légumes', icon: '🥕'),
+      Category(id: 'en:meats', name: 'Viandes', icon: '🥩'),
+      Category(id: 'en:dairy', name: 'Laitages', icon: '🥛'),
+      Category(id: 'en:beverages', name: 'Boissons', icon: '🥤'),
+      Category(id: 'en:cereals', name: 'Céréales', icon: '🌾'),
+      Category(id: 'en:snacks', name: 'Snacks', icon: '🍿'),
+      Category(id: 'en:fish', name: 'Poissons', icon: '🐟'),
+      Category(id: 'en:sweets', name: 'Sucreries', icon: '🍬'),
+      Category(id: 'en:others', name: 'Autres', icon: '📦'),
     ];
-  }
-
-  // --- Garde le reste de tes méthodes (getSuperCategories, etc.) ci-dessous ---
-  
-  Future<List<SuperCategory>> getSuperCategories() async {
-    final allCategories = await getCategories(limit: 30);
-    return _organizeCategoriesIntoSuperCategories(allCategories);
-  }
-
-  Future<List<Category>> getCategories({int limit = 30}) async {
-    return _getDefaultCategories(); // Utilisation directe des catégories demandées
-  }
-
-  List<SuperCategory> _organizeCategoriesIntoSuperCategories(List<Category> categories) {
-    // Cette méthode peut rester telle quelle ou être simplifiée selon tes modèles SuperCategory
-    final superCategoryDefinitions = [
-      {'id': 'fruits', 'name': 'Fruits', 'icon': '🍎', 'keywords': ['fruit']},
-      {'id': 'vegetables', 'name': 'Légumes', 'icon': '🥕', 'keywords': ['vegetable', 'legume']},
-      {'id': 'meats', 'name': 'Viandes', 'icon': '🥩', 'keywords': ['meat', 'viande', 'boeuf', 'porc']},
-      {'id': 'dairy', 'name': 'Laitages', 'icon': '🥛', 'keywords': ['dairy', 'lait', 'fromage', 'yaourt']},
-      {'id': 'beverages', 'name': 'Boissons', 'icon': '🥤', 'keywords': ['beverage', 'boisson', 'eau', 'jus']},
-      {'id': 'cereals', 'name': 'Céréales', 'icon': '🌾', 'keywords': ['cereal', 'pain', 'pâtes', 'riz']},
-      {'id': 'snacks', 'name': 'Snacks', 'icon': '🍿', 'keywords': ['snack', 'chips', 'biscuit']},
-      {'id': 'fish', 'name': 'Poissons', 'icon': '🐟', 'keywords': ['fish', 'poisson', 'saumon']},
-      {'id': 'sweets', 'name': 'Sucreries', 'icon': '🍬', 'keywords': ['sweet', 'chocolat', 'bonbon', 'dessert']},
-      {'id': 'other', 'name': 'Autres', 'icon': '📦', 'keywords': []},
-    ];
-
-    final Map<String, List<Category>> categorized = {};
-    for (final def in superCategoryDefinitions) {
-      categorized[def['id'] as String] = [];
-    }
-
-    for (final category in categories) {
-      final nameLower = category.name.toLowerCase();
-      bool isCategorized = false;
-
-      for (var def in superCategoryDefinitions) {
-        if (def['id'] == 'other') continue;
-        final keywords = def['keywords'] as List<String>;
-        if (keywords.any((k) => nameLower.contains(k))) {
-          categorized[def['id']]!.add(category);
-          isCategorized = true;
-          break;
-        }
-      }
-      if (!isCategorized) categorized['other']!.add(category);
-    }
-
-    return superCategoryDefinitions
-        .map((def) => SuperCategory(
-              id: def['id'] as String,
-              name: def['name'] as String,
-              icon: def['icon'] as String,
-              categories: categorized[def['id']] ?? [],
-            ))
-        .where((sc) => sc.categories.isNotEmpty)
-        .toList();
   }
 }

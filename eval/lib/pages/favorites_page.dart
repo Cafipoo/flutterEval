@@ -1,71 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/scanned_products_provider.dart';
+import '../providers/favorites_provider.dart';
 import '../widgets/product_card.dart';
 import '../pages/product_detail_page.dart';
-import '../pages/scan_pages.dart';
 import '../theme/app_theme.dart';
 
-class ScannedProductsPage extends StatelessWidget {
-  const ScannedProductsPage({super.key});
-
-  void _scanProduct(BuildContext context) async {
-    final scannedCode = await Navigator.push<String>(
-      context,
-      MaterialPageRoute(builder: (context) => const ScanPage()),
-    );
-
-    if (scannedCode != null && context.mounted) {
-      final provider = context.read<ScannedProductsProvider>();
-      final product = await provider.scanAndAddProduct(scannedCode);
-
-      if (product == null && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.error_outline, color: Colors.white),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text('Produit non trouvé : $scannedCode'),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.red.shade600,
-          ),
-        );
-      } else if (product != null && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.check_circle_outline, color: Colors.white),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text('${product.productName ?? 'Produit'} ajouté !'),
-                ),
-              ],
-            ),
-            backgroundColor: AppTheme.primaryGreen,
-          ),
-        );
-      }
-    }
-  }
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // AppBar avec gradient
+          // AppBar avec gradient rouge/rose
           SliverAppBar(
             expandedHeight: 100,
             floating: false,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: const Text(
-                'Mes Scans',
+                'Mes Favoris',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -78,8 +33,8 @@ class ScannedProductsPage extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppTheme.accentOrange,
-                      AppTheme.accentOrangeLight,
+                      Color(0xFFE91E63),
+                      Color(0xFFFF5252),
                     ],
                   ),
                 ),
@@ -114,11 +69,9 @@ class ScannedProductsPage extends StatelessWidget {
               ),
             ),
             actions: [
-              Consumer<ScannedProductsProvider>(
+              Consumer<FavoritesProvider>(
                 builder: (context, provider, child) {
-                  if (provider.scannedProducts.isEmpty) {
-                    return const SizedBox();
-                  }
+                  if (provider.favorites.isEmpty) return const SizedBox();
                   return IconButton(
                     icon: const Icon(Icons.delete_sweep_rounded, color: Colors.white),
                     tooltip: 'Tout supprimer',
@@ -129,21 +82,11 @@ class ScannedProductsPage extends StatelessWidget {
             ],
           ),
           // Contenu
-          Consumer<ScannedProductsProvider>(
+          Consumer<FavoritesProvider>(
             builder: (context, provider, child) {
-              if (provider.isLoading && provider.scannedProducts.isEmpty) {
-                return const SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppTheme.accentOrange,
-                    ),
-                  ),
-                );
-              }
-
-              if (provider.scannedProducts.isEmpty) {
+              if (provider.favorites.isEmpty) {
                 return SliverFillRemaining(
-                  child: _buildEmptyState(context),
+                  child: _buildEmptyState(),
                 );
               }
 
@@ -158,7 +101,7 @@ class ScannedProductsPage extends StatelessWidget {
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final product = provider.scannedProducts[index];
+                      final product = provider.favorites[index];
                       return Dismissible(
                         key: Key(product.code),
                         direction: DismissDirection.endToStart,
@@ -170,36 +113,64 @@ class ScannedProductsPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: const Icon(
-                            Icons.delete_rounded,
+                            Icons.favorite_border_rounded,
                             color: Colors.white,
                             size: 28,
                           ),
                         ),
                         onDismissed: (_) {
-                          provider.removeProduct(product);
+                          provider.removeFavorite(product.code);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                '${product.productName ?? "Produit"} supprimé',
+                                '${product.productName ?? "Produit"} retiré des favoris',
                               ),
                             ),
                           );
                         },
-                        child: ProductCard(
-                          product: product,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductDetailPage(product: product),
+                        child: Stack(
+                          children: [
+                            ProductCard(
+                              product: product,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailPage(product: product),
+                                  ),
+                                );
+                              },
+                            ),
+                            // Petit coeur en haut à gauche
+                            Positioned(
+                              top: 8,
+                              left: 8,
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.favorite_rounded,
+                                  color: Colors.red,
+                                  size: 16,
+                                ),
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       );
                     },
-                    childCount: provider.scannedProducts.length,
+                    childCount: provider.favorites.length,
                   ),
                 ),
               );
@@ -207,19 +178,10 @@ class ScannedProductsPage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _scanProduct(context),
-        backgroundColor: AppTheme.accentOrange,
-        icon: const Icon(Icons.qr_code_scanner_rounded),
-        label: const Text(
-          'Scanner',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-      ),
     );
   }
 
-  Widget _buildEmptyState(BuildContext context) {
+  Widget _buildEmptyState() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -229,18 +191,18 @@ class ScannedProductsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppTheme.accentOrange.withOpacity(0.1),
+                color: Colors.red.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                Icons.qr_code_scanner_rounded,
+                Icons.favorite_border_rounded,
                 size: 64,
-                color: AppTheme.accentOrange.withOpacity(0.7),
+                color: Colors.red.withOpacity(0.5),
               ),
             ),
             const SizedBox(height: 24),
             const Text(
-              'Aucun produit scanné',
+              'Aucun favori',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -249,7 +211,7 @@ class ScannedProductsPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Scannez le code-barres d\'un produit\npour voir ses informations',
+              'Ajoutez des produits à vos favoris\nen appuyant sur le coeur',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -257,27 +219,13 @@ class ScannedProductsPage extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 32),
-            ElevatedButton.icon(
-              onPressed: () => _scanProduct(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.accentOrange,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-              ),
-              icon: const Icon(Icons.qr_code_scanner_rounded),
-              label: const Text('Scanner un produit'),
-            ),
           ],
         ),
       ),
     );
   }
 
-  void _showDeleteDialog(
-      BuildContext context, ScannedProductsProvider provider) {
+  void _showDeleteDialog(BuildContext context, FavoritesProvider provider) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -293,16 +241,16 @@ class ScannedProductsPage extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                Icons.delete_sweep_rounded,
+                Icons.favorite_border_rounded,
                 color: Colors.red.shade400,
               ),
             ),
             const SizedBox(width: 12),
-            const Text('Tout supprimer ?'),
+            const Text('Vider les favoris ?'),
           ],
         ),
         content: const Text(
-          'Cette action supprimera tous vos produits scannés.',
+          'Cette action supprimera tous vos produits favoris.',
         ),
         actions: [
           TextButton(

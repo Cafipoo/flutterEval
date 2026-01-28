@@ -13,7 +13,7 @@ class OpenFoodFactsService {
   // Optimisation : On ne demande que le strict nécessaire pour alléger la réponse JSON
   static const String _optimizedFields = 
       'code,product_name,product_name_fr,brands,image_url,'
-      'nutriscore_grade,categories_tags,nutriments,quantity';
+      'nutrition_grades,nutriscore_grade,categories_tags,nutriments,quantity';
 
   Map<String, String> get _headers => {
     'User-Agent': userAgent,
@@ -111,7 +111,6 @@ class OpenFoodFactsService {
       Category(id: 'en:snacks', name: 'Snacks', icon: '🍿'),
       Category(id: 'en:fish', name: 'Poissons', icon: '🐟'),
       Category(id: 'en:sweets', name: 'Sucreries', icon: '🍬'),
-      Category(id: 'en:others', name: 'Autres', icon: '📦'),
     ];
   }
 }

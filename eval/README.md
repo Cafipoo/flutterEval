@@ -67,7 +67,7 @@ L’APK est généré dans `build/app/outputs/flutter-apk/app-release.apk`.
 
 ### 5. APK
 
-Un fichier APK est déposé dans le dépôt Git (dans le dossier `apk/`) pour pouvoir lancer et tester facilement l’application sur un appareil Android sans avoir à compiler le projet.
+Un fichier APK est disponible en téléchargement sur [la release v1.0.0](https://github.com/Cafipoo/flutterEval/releases/tag/v1.0.0) pour pouvoir lancer et tester facilement l’application sur un appareil Android sans avoir à compiler le projet.
 
 ## 📸 Screenshots
 
@@ -114,7 +114,7 @@ Fiche produit avec Nutri-Score, valeurs nutritionnelles et informations détaill
 
 ## 📸 Vidéo de présentation
 
-![Video](video/video.mp4)
+La vidéo de présentation est disponible en téléchargement sur [la release v1.0.0](https://github.com/Cafipoo/flutterEval/releases/tag/v1.0.0).
 
 ## 📝 Difficultés rencontrées
 

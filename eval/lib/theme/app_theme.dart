@@ -5,14 +5,14 @@ class AppTheme {
   static const Color primaryGreen = Color(0xFF2E7D32);
   static const Color primaryGreenLight = Color(0xFF4CAF50);
   static const Color primaryGreenDark = Color(0xFF1B5E20);
-  
+
   static const Color accentOrange = Color(0xFFFF6D00);
   static const Color accentOrangeLight = Color(0xFFFF9E40);
-  
+
   static const Color backgroundLight = Color(0xFFF5F5F5);
   static const Color surfaceLight = Colors.white;
   static const Color cardBackground = Colors.white;
-  
+
   static const Color textPrimary = Color(0xFF1A1A1A);
   static const Color textSecondary = Color(0xFF666666);
   static const Color textHint = Color(0xFF999999);
@@ -28,14 +28,13 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      
+
       // Color Scheme
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryGreen,
         primary: primaryGreen,
         secondary: accentOrange,
         surface: surfaceLight,
-        background: backgroundLight,
         brightness: Brightness.light,
       ),
 
@@ -63,7 +62,7 @@ class AppTheme {
         elevation: 8,
         height: 65,
         backgroundColor: Colors.white,
-        indicatorColor: primaryGreenLight.withOpacity(0.2),
+        indicatorColor: primaryGreenLight.withValues(alpha: 0.2),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return const TextStyle(
@@ -89,10 +88,8 @@ class AppTheme {
       // Cards
       cardTheme: CardThemeData(
         elevation: 2,
-        shadowColor: Colors.black.withOpacity(0.1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shadowColor: Colors.black.withValues(alpha: 0.1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         clipBehavior: Clip.antiAlias,
       ),
 
@@ -106,10 +103,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
 
@@ -125,14 +119,12 @@ class AppTheme {
 
       // Chips
       chipTheme: ChipThemeData(
-        backgroundColor: primaryGreenLight.withOpacity(0.1),
+        backgroundColor: primaryGreenLight.withValues(alpha: 0.1),
         labelStyle: const TextStyle(
           color: primaryGreen,
           fontWeight: FontWeight.w500,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         side: BorderSide.none,
       ),
 
@@ -141,16 +133,12 @@ class AppTheme {
         backgroundColor: textPrimary,
         contentTextStyle: const TextStyle(color: Colors.white),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
 
       // Dialog
       dialogTheme: DialogThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         titleTextStyle: const TextStyle(
           color: textPrimary,
           fontSize: 20,
@@ -174,7 +162,10 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: primaryGreen, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
       ),
 
       // Text Theme
@@ -204,18 +195,9 @@ class AppTheme {
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
-        bodyLarge: TextStyle(
-          color: textPrimary,
-          fontSize: 16,
-        ),
-        bodyMedium: TextStyle(
-          color: textSecondary,
-          fontSize: 14,
-        ),
-        bodySmall: TextStyle(
-          color: textHint,
-          fontSize: 12,
-        ),
+        bodyLarge: TextStyle(color: textPrimary, fontSize: 16),
+        bodyMedium: TextStyle(color: textSecondary, fontSize: 14),
+        bodySmall: TextStyle(color: textHint, fontSize: 12),
       ),
     );
   }

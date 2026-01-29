@@ -75,10 +75,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      AppTheme.primaryGreen,
-                      AppTheme.primaryGreenLight,
-                    ],
+                    colors: [AppTheme.primaryGreen, AppTheme.primaryGreenLight],
                   ),
                 ),
                 child: Stack(
@@ -91,7 +88,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                         height: 150,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -103,7 +100,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                         height: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -127,7 +124,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryGreen.withOpacity(0.1),
+                          color: AppTheme.primaryGreen.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -170,15 +167,11 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
               }
 
               if (provider.error != null && provider.products.isEmpty) {
-                return SliverFillRemaining(
-                  child: _buildErrorWidget(provider),
-                );
+                return SliverFillRemaining(child: _buildErrorWidget(provider));
               }
 
               if (provider.products.isEmpty) {
-                return SliverFillRemaining(
-                  child: _buildEmptyWidget(),
-                );
+                return SliverFillRemaining(child: _buildEmptyWidget());
               }
 
               return SliverPadding(
@@ -197,7 +190,9 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(16),
                             child: CircularProgressIndicator(
-                              color: AppTheme.primaryGreen.withOpacity(0.5),
+                              color: AppTheme.primaryGreen.withValues(
+                                alpha: 0.5,
+                              ),
                             ),
                           ),
                         );
@@ -251,18 +246,13 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
             const SizedBox(height: 24),
             const Text(
               'Erreur de chargement',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               provider.error ?? 'Une erreur est survenue',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(color: Colors.grey.shade600),
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
@@ -301,18 +291,13 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
             const SizedBox(height: 24),
             const Text(
               'Aucun produit',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'Cette catégorie ne contient\npas encore de produits',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(color: Colors.grey.shade600),
             ),
           ],
         ),

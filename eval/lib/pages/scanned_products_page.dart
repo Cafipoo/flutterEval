@@ -26,9 +26,7 @@ class ScannedProductsPage extends StatelessWidget {
               children: [
                 const Icon(Icons.error_outline, color: Colors.white),
                 const SizedBox(width: 12),
-                Expanded(
-                  child: Text('Produit non trouvé : $scannedCode'),
-                ),
+                Expanded(child: Text('Produit non trouvé : $scannedCode')),
               ],
             ),
             backgroundColor: Colors.red.shade600,
@@ -77,10 +75,7 @@ class ScannedProductsPage extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      AppTheme.accentOrange,
-                      AppTheme.accentOrangeLight,
-                    ],
+                    colors: [AppTheme.accentOrange, AppTheme.accentOrangeLight],
                   ),
                 ),
                 child: Stack(
@@ -93,7 +88,7 @@ class ScannedProductsPage extends StatelessWidget {
                         height: 150,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -105,7 +100,7 @@ class ScannedProductsPage extends StatelessWidget {
                         height: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -120,7 +115,10 @@ class ScannedProductsPage extends StatelessWidget {
                     return const SizedBox();
                   }
                   return IconButton(
-                    icon: const Icon(Icons.delete_sweep_rounded, color: Colors.white),
+                    icon: const Icon(
+                      Icons.delete_sweep_rounded,
+                      color: Colors.white,
+                    ),
                     tooltip: 'Tout supprimer',
                     onPressed: () => _showDeleteDialog(context, provider),
                   );
@@ -142,9 +140,7 @@ class ScannedProductsPage extends StatelessWidget {
               }
 
               if (provider.scannedProducts.isEmpty) {
-                return SliverFillRemaining(
-                  child: _buildEmptyState(context),
-                );
+                return SliverFillRemaining(child: _buildEmptyState(context));
               }
 
               return SliverPadding(
@@ -156,51 +152,48 @@ class ScannedProductsPage extends StatelessWidget {
                     mainAxisSpacing: 12,
                     childAspectRatio: 0.72,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final product = provider.scannedProducts[index];
-                      return Dismissible(
-                        key: Key(product.code),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 20),
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade400,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Icon(
-                            Icons.delete_rounded,
-                            color: Colors.white,
-                            size: 28,
-                          ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final product = provider.scannedProducts[index];
+                    return Dismissible(
+                      key: Key(product.code),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade400,
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        onDismissed: (_) {
-                          provider.removeProduct(product);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                '${product.productName ?? "Produit"} supprimé',
-                              ),
+                        child: const Icon(
+                          Icons.delete_rounded,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      onDismissed: (_) {
+                        provider.removeProduct(product);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '${product.productName ?? "Produit"} supprimé',
+                            ),
+                          ),
+                        );
+                      },
+                      child: ProductCard(
+                        product: product,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductDetailPage(product: product),
                             ),
                           );
                         },
-                        child: ProductCard(
-                          product: product,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductDetailPage(product: product),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    childCount: provider.scannedProducts.length,
-                  ),
+                      ),
+                    );
+                  }, childCount: provider.scannedProducts.length),
                 ),
               );
             },
@@ -229,13 +222,13 @@ class ScannedProductsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppTheme.accentOrange.withOpacity(0.1),
+                color: AppTheme.accentOrange.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.qr_code_scanner_rounded,
                 size: 64,
-                color: AppTheme.accentOrange.withOpacity(0.7),
+                color: AppTheme.accentOrange.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 24),
@@ -277,13 +270,13 @@ class ScannedProductsPage extends StatelessWidget {
   }
 
   void _showDeleteDialog(
-      BuildContext context, ScannedProductsProvider provider) {
+    BuildContext context,
+    ScannedProductsProvider provider,
+  ) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
             Container(
@@ -314,9 +307,7 @@ class ScannedProductsPage extends StatelessWidget {
               provider.clearAll();
               Navigator.pop(ctx);
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Supprimer'),
           ),
         ],

@@ -26,16 +26,13 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 20,
               offset: const Offset(0, -5),
             ),
@@ -85,7 +82,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
     Color? badgeColor,
   }) {
     final isSelected = _currentIndex == index;
-    
+
     return InkWell(
       onTap: () => setState(() => _currentIndex = index),
       borderRadius: BorderRadius.circular(16),
@@ -93,8 +90,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected 
-              ? AppTheme.primaryGreen.withOpacity(0.1)
+          color: isSelected
+              ? AppTheme.primaryGreen.withValues(alpha: 0.1)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
@@ -106,8 +103,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
               children: [
                 Icon(
                   isSelected ? activeIcon : icon,
-                  color: isSelected 
-                      ? AppTheme.primaryGreen 
+                  color: isSelected
+                      ? AppTheme.primaryGreen
                       : AppTheme.textSecondary,
                   size: 26,
                 ),
@@ -123,7 +120,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
                         boxShadow: [
                           BoxShadow(
                             color: (badgeColor ?? AppTheme.accentOrange)
-                                .withOpacity(0.4),
+                                .withValues(alpha: 0.4),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -152,8 +149,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                color: isSelected 
-                    ? AppTheme.primaryGreen 
+                color: isSelected
+                    ? AppTheme.primaryGreen
                     : AppTheme.textSecondary,
               ),
             ),

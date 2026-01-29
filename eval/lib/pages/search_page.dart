@@ -65,6 +65,7 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: AppTheme.textPrimary,
+        iconTheme: const IconThemeData(color: AppTheme.textPrimary),
         elevation: 0,
         title: const Text(
           'Rechercher',
@@ -171,7 +172,9 @@ class _SearchPageState extends State<SearchPage> {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: AppTheme.primaryGreen.withOpacity(0.1),
+                              color: AppTheme.primaryGreen.withValues(
+                                alpha: 0.1,
+                              ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -192,12 +195,13 @@ class _SearchPageState extends State<SearchPage> {
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 0.72,
-                        ),
-                        itemCount: provider.products.length +
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                              childAspectRatio: 0.72,
+                            ),
+                        itemCount:
+                            provider.products.length +
                             (provider.hasMore ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index >= provider.products.length) {
@@ -205,7 +209,9 @@ class _SearchPageState extends State<SearchPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
                                 child: CircularProgressIndicator(
-                                  color: AppTheme.primaryGreen.withOpacity(0.5),
+                                  color: AppTheme.primaryGreen.withValues(
+                                    alpha: 0.5,
+                                  ),
                                 ),
                               ),
                             );
@@ -247,13 +253,13 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppTheme.primaryGreen.withOpacity(0.1),
+                color: AppTheme.primaryGreen.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.search_rounded,
                 size: 48,
-                color: AppTheme.primaryGreen.withOpacity(0.5),
+                color: AppTheme.primaryGreen.withValues(alpha: 0.5),
               ),
             ),
             const SizedBox(height: 24),
@@ -291,13 +297,13 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.search_off_rounded,
                 size: 48,
-                color: Colors.orange.withOpacity(0.7),
+                color: Colors.orange.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 24),
@@ -313,10 +319,7 @@ class _SearchPageState extends State<SearchPage> {
             Text(
               'Essayez avec d\'autres mots-clés',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
             ),
           ],
         ),
@@ -346,10 +349,7 @@ class _SearchPageState extends State<SearchPage> {
             const SizedBox(height: 24),
             const Text(
               'Erreur de recherche',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
@@ -359,10 +359,8 @@ class _SearchPageState extends State<SearchPage> {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: () => provider.search(
-                _searchController.text,
-                refresh: true,
-              ),
+              onPressed: () =>
+                  provider.search(_searchController.text, refresh: true),
               icon: const Icon(Icons.refresh_rounded),
               label: const Text('Réessayer'),
             ),

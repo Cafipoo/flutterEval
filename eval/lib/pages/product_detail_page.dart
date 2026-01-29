@@ -7,10 +7,7 @@ import '../theme/app_theme.dart';
 class ProductDetailPage extends StatelessWidget {
   final Product product;
 
-  const ProductDetailPage({
-    super.key,
-    required this.product,
-  });
+  const ProductDetailPage({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +17,11 @@ class ProductDetailPage extends StatelessWidget {
           // AppBar avec image
           SliverAppBar(
             expandedHeight: 280,
-            pinned: true,
-            backgroundColor: AppTheme.primaryGreen,
+            pinned: false,
+            floating: false,
+            backgroundColor: Colors.transparent,
+            foregroundColor: AppTheme.textPrimary,
+            iconTheme: const IconThemeData(color: AppTheme.textPrimary),
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 fit: StackFit.expand,
@@ -32,10 +32,7 @@ class ProductDetailPage extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.grey.shade200,
-                          Colors.grey.shade100,
-                        ],
+                        colors: [Colors.grey.shade200, Colors.grey.shade100],
                       ),
                     ),
                   ),
@@ -78,7 +75,7 @@ class ProductDetailPage extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.3),
+                            Colors.black.withValues(alpha: 0.3),
                           ],
                         ),
                       ),
@@ -102,7 +99,7 @@ class ProductDetailPage extends StatelessWidget {
                   return Container(
                     margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -152,9 +149,7 @@ class ProductDetailPage extends StatelessWidget {
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(24),
-                  ),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -169,7 +164,7 @@ class ProductDetailPage extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryGreen.withOpacity(0.1),
+                            color: AppTheme.primaryGreen.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -250,7 +245,7 @@ class ProductDetailPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.5),
+            color: color.withValues(alpha: 0.5),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -271,7 +266,7 @@ class ProductDetailPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
@@ -324,11 +319,9 @@ class ProductDetailPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,10 +330,7 @@ class ProductDetailPage extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 2),
           Text(
@@ -387,24 +377,26 @@ class ProductDetailPage extends StatelessWidget {
           runSpacing: 8,
           children: product.categories!
               .take(5)
-              .map((category) => Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+              .map(
+                (category) => Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryGreen.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    category.replaceAll('en:', '').replaceAll('-', ' '),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.primaryGreen,
+                      fontWeight: FontWeight.w500,
                     ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryGreen.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      category.replaceAll('en:', '').replaceAll('-', ' '),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.primaryGreen,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ))
+                  ),
+                ),
+              )
               .toList(),
         ),
         const SizedBox(height: 24),
@@ -447,10 +439,7 @@ class ProductDetailPage extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           'Pour 100g',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey.shade500,
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
         ),
         const SizedBox(height: 16),
         Container(
@@ -473,11 +462,7 @@ class ProductDetailPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: isLast
                       ? null
-                      : Border(
-                          bottom: BorderSide(
-                            color: Colors.grey.shade200,
-                          ),
-                        ),
+                      : Border(bottom: BorderSide(color: Colors.grey.shade200)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -515,7 +500,7 @@ class ProductDetailPage extends StatelessWidget {
         .replaceAll('_100g', '')
         .replaceAll('_', ' ')
         .replaceAll('-', ' ');
-    
+
     if (name.isEmpty) return name;
     return name[0].toUpperCase() + name.substring(1);
   }

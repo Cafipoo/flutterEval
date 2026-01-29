@@ -6,20 +6,14 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onTap;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-    required this.onTap,
-  });
+  const ProductCard({super.key, required this.product, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      shadowColor: Colors.black.withOpacity(0.15),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shadowColor: Colors.black.withValues(alpha: 0.15),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
@@ -119,18 +113,11 @@ class ProductCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.image_outlined,
-            size: 40,
-            color: Colors.grey.shade400,
-          ),
+          Icon(Icons.image_outlined, size: 40, color: Colors.grey.shade400),
           const SizedBox(height: 4),
           Text(
             'Pas d\'image',
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.grey.shade500,
-            ),
+            style: TextStyle(fontSize: 10, color: Colors.grey.shade500),
           ),
         ],
       ),
@@ -139,8 +126,8 @@ class ProductCard extends StatelessWidget {
 
   Widget _buildNutriScoreBadge(String? grade) {
     // Si null ou unknown, afficher une croix grise
-    if (grade == null || 
-        grade.trim().isEmpty || 
+    if (grade == null ||
+        grade.trim().isEmpty ||
         grade.toLowerCase() == 'unknown' ||
         grade.toLowerCase() == 'not-applicable') {
       return Container(
@@ -151,7 +138,7 @@ class ProductCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -170,7 +157,7 @@ class ProductCard extends StatelessWidget {
     // Sinon afficher le badge normal
     final color = AppTheme.getNutriScoreColor(grade);
     final textColor = AppTheme.getNutriScoreTextColor(grade);
-    
+
     return Container(
       width: 32,
       height: 32,
@@ -179,7 +166,7 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.4),
+            color: color.withValues(alpha: 0.4),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

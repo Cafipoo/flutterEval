@@ -9,7 +9,8 @@ class ScanPage extends StatefulWidget {
   State<ScanPage> createState() => _ScanPageState();
 }
 
-class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin {
+class _ScanPageState extends State<ScanPage>
+    with SingleTickerProviderStateMixin {
   bool isScanFinished = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -46,9 +47,10 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
                 final String? code = barcodes.first.rawValue;
                 if (code != null) {
                   isScanFinished = true;
+                  final navigator = Navigator.of(context);
                   Future.delayed(const Duration(milliseconds: 100), () {
                     if (mounted) {
-                      Navigator.pop(context, code);
+                      navigator.pop(code);
                     }
                   });
                 }
@@ -74,7 +76,7 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Row(
@@ -114,7 +116,7 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.8),
+                    Colors.black.withValues(alpha: 0.8),
                   ],
                 ),
               ),
@@ -165,7 +167,7 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
     required VoidCallback onPressed,
   }) {
     return Material(
-      color: Colors.black.withOpacity(0.5),
+      color: Colors.black.withValues(alpha: 0.5),
       borderRadius: BorderRadius.circular(25),
       child: InkWell(
         onTap: onPressed,
@@ -174,11 +176,7 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
           width: 44,
           height: 44,
           alignment: Alignment.center,
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 24,
-          ),
+          child: Icon(icon, color: Colors.white, size: 24),
         ),
       ),
     );
@@ -196,7 +194,7 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
             // Zone sombre autour
             ColorFiltered(
               colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.6),
+                Colors.black.withValues(alpha: 0.6),
                 BlendMode.srcOut,
               ),
               child: Stack(
@@ -268,7 +266,7 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
                         borderRadius: BorderRadius.circular(2),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.primaryGreen.withOpacity(0.5),
+                            color: AppTheme.primaryGreen.withValues(alpha: 0.5),
                             blurRadius: 10,
                             spreadRadius: 2,
                           ),
@@ -350,7 +348,12 @@ class CornerPainter extends CustomPainter {
     } else if (bottomRight) {
       path.moveTo(size.width * 0.4, size.height);
       path.lineTo(size.width - 8, size.height);
-      path.quadraticBezierTo(size.width, size.height, size.width, size.height - 8);
+      path.quadraticBezierTo(
+        size.width,
+        size.height,
+        size.width,
+        size.height - 8,
+      );
       path.lineTo(size.width, size.height * 0.4);
     }
 

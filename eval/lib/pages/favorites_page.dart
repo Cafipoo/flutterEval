@@ -32,10 +32,7 @@ class FavoritesPage extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFFE91E63),
-                      Color(0xFFFF5252),
-                    ],
+                    colors: [Color(0xFFE91E63), Color(0xFFFF5252)],
                   ),
                 ),
                 child: Stack(
@@ -48,7 +45,7 @@ class FavoritesPage extends StatelessWidget {
                         height: 150,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -60,7 +57,7 @@ class FavoritesPage extends StatelessWidget {
                         height: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -73,7 +70,10 @@ class FavoritesPage extends StatelessWidget {
                 builder: (context, provider, child) {
                   if (provider.favorites.isEmpty) return const SizedBox();
                   return IconButton(
-                    icon: const Icon(Icons.delete_sweep_rounded, color: Colors.white),
+                    icon: const Icon(
+                      Icons.delete_sweep_rounded,
+                      color: Colors.white,
+                    ),
                     tooltip: 'Tout supprimer',
                     onPressed: () => _showDeleteDialog(context, provider),
                   );
@@ -85,9 +85,7 @@ class FavoritesPage extends StatelessWidget {
           Consumer<FavoritesProvider>(
             builder: (context, provider, child) {
               if (provider.favorites.isEmpty) {
-                return SliverFillRemaining(
-                  child: _buildEmptyState(),
-                );
+                return SliverFillRemaining(child: _buildEmptyState());
               }
 
               return SliverPadding(
@@ -99,79 +97,76 @@ class FavoritesPage extends StatelessWidget {
                     mainAxisSpacing: 12,
                     childAspectRatio: 0.72,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final product = provider.favorites[index];
-                      return Dismissible(
-                        key: Key(product.code),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 20),
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade400,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Icon(
-                            Icons.favorite_border_rounded,
-                            color: Colors.white,
-                            size: 28,
-                          ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final product = provider.favorites[index];
+                    return Dismissible(
+                      key: Key(product.code),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade400,
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        onDismissed: (_) {
-                          provider.removeFavorite(product.code);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                '${product.productName ?? "Produit"} retiré des favoris',
-                              ),
+                        child: const Icon(
+                          Icons.favorite_border_rounded,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      onDismissed: (_) {
+                        provider.removeFavorite(product.code);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '${product.productName ?? "Produit"} retiré des favoris',
                             ),
-                          );
-                        },
-                        child: Stack(
-                          children: [
-                            ProductCard(
-                              product: product,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailPage(product: product),
+                          ),
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          ProductCard(
+                            product: product,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProductDetailPage(product: product),
+                                ),
+                              );
+                            },
+                          ),
+                          // Petit coeur en haut à gauche
+                          Positioned(
+                            top: 8,
+                            left: 8,
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.1),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
                                   ),
-                                );
-                              },
-                            ),
-                            // Petit coeur en haut à gauche
-                            Positioned(
-                              top: 8,
-                              left: 8,
-                              child: Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: const Icon(
-                                  Icons.favorite_rounded,
-                                  color: Colors.red,
-                                  size: 16,
-                                ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.favorite_rounded,
+                                color: Colors.red,
+                                size: 16,
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: provider.favorites.length,
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }, childCount: provider.favorites.length),
                 ),
               );
             },
@@ -191,13 +186,13 @@ class FavoritesPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.favorite_border_rounded,
                 size: 64,
-                color: Colors.red.withOpacity(0.5),
+                color: Colors.red.withValues(alpha: 0.5),
               ),
             ),
             const SizedBox(height: 24),
@@ -229,9 +224,7 @@ class FavoritesPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
             Container(
@@ -262,9 +255,7 @@ class FavoritesPage extends StatelessWidget {
               provider.clearAll();
               Navigator.pop(ctx);
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Supprimer'),
           ),
         ],

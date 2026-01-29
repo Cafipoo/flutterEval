@@ -44,10 +44,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      AppTheme.primaryGreen,
-                      AppTheme.primaryGreenLight,
-                    ],
+                    colors: [AppTheme.primaryGreen, AppTheme.primaryGreenLight],
                   ),
                 ),
                 child: Stack(
@@ -60,7 +57,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         height: 150,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -72,7 +69,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         height: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                         ),
                       ),
                     ),
@@ -128,16 +125,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
               }
 
               if (provider.error != null && provider.categories.isEmpty) {
-                return SliverFillRemaining(
-                  child: _buildErrorWidget(provider),
-                );
+                return SliverFillRemaining(child: _buildErrorWidget(provider));
               }
 
               if (provider.categories.isEmpty) {
                 return const SliverFillRemaining(
-                  child: Center(
-                    child: Text('Aucune catégorie disponible'),
-                  ),
+                  child: Center(child: Text('Aucune catégorie disponible')),
                 );
               }
 
@@ -150,13 +143,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     mainAxisSpacing: 12,
                     childAspectRatio: 1.1,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final category = provider.categories[index];
-                      return _buildCategoryCard(context, category, index);
-                    },
-                    childCount: provider.categories.length,
-                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final category = provider.categories[index];
+                    return _buildCategoryCard(context, category, index);
+                  }, childCount: provider.categories.length),
                 ),
               );
             },
@@ -179,9 +169,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
     return Card(
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -201,10 +189,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                colorPair[0],
-                colorPair[0].withOpacity(0.7),
-              ],
+              colors: [colorPair[0], colorPair[0].withValues(alpha: 0.7)],
             ),
           ),
           child: Stack(
@@ -218,7 +203,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   height: 70,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: colorPair[1].withOpacity(0.15),
+                    color: colorPair[1].withValues(alpha: 0.15),
                   ),
                 ),
               ),
@@ -229,10 +214,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      category.icon,
-                      style: const TextStyle(fontSize: 40),
-                    ),
+                    Text(category.icon, style: const TextStyle(fontSize: 40)),
                     const Spacer(),
                     Text(
                       category.name,
@@ -248,14 +230,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         Icon(
                           Icons.arrow_forward_rounded,
                           size: 14,
-                          color: colorPair[1].withOpacity(0.7),
+                          color: colorPair[1].withValues(alpha: 0.7),
                         ),
                         const SizedBox(width: 4),
                         Text(
                           'Explorer',
                           style: TextStyle(
                             fontSize: 11,
-                            color: colorPair[1].withOpacity(0.7),
+                            color: colorPair[1].withValues(alpha: 0.7),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -303,9 +285,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             Text(
               provider.error ?? 'Une erreur est survenue',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(color: Colors.grey.shade600),
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(

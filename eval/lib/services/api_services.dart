@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/product.dart';
 
 class ApiService {
   Future<Product?> fetchProduct(String barcode) async {
-    final url = Uri.parse('https://world.openfoodfacts.org/api/v2/product/$barcode.json');
-    
+    final url = Uri.parse(
+      'https://world.openfoodfacts.org/api/v2/product/$barcode.json',
+    );
+
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -15,7 +18,7 @@ class ApiService {
         }
       }
     } catch (e) {
-      print("Erreur API: $e");
+      debugPrint("Erreur API: $e");
     }
     return null;
   }
